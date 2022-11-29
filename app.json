@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "trello-project",
+    "slug": "trello-project",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "trello-project"
+}
