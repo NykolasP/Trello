@@ -5,13 +5,21 @@ import { Alert, Dimensions, View } from "react-native";
 import { TrelloContext } from '../context';
 import {useNavigation} from '@react-navigation/native';
 import ListDetElement from './ListDetElement';
+import { deleteTableau } from '../api/tableau';
 
 
 export default function Listtab({ item, navigation, modif }){
-    const { user, setListEnCours } = useContext(TrelloContext);
+    const { user,tabEnCours, setListEnCours } = useContext(TrelloContext);
     function handleClick() {
         setListEnCours(item.id)
         navigation.push("Liste Elements")
+    }
+    function handleDelete() {
+        deleteTableau(user.uid,tabEnCours, item.id).then((data) => {
+            modif(data)
+        }).catch(err => {
+            console.log(err);
+        })
     }
     return (
         <View style={{ width: Dimensions.get('window').width }}>
@@ -27,7 +35,7 @@ export default function Listtab({ item, navigation, modif }){
                 rightContent={(reset) => (
                     <Button
                         title="Delete"
-                        //onPress={}
+                        onPress={handleDelete}
                         icon={{ name: 'delete', color: 'white' }}
                         buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}
                     />

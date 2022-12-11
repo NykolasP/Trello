@@ -11,14 +11,10 @@ export function ajoutTableau(uid, tabEnCours, nomTableau) {
             get(child(reference, `Trellos/${uid}`)).then((snapshot) => {
                 const data = snapshot.val() ?? [];
                 const indexCarnet = data.findIndex(elem => elem.id === tabEnCours)
-                console.log("a");
-                console.log(data[indexCarnet]);
                 if (!data[indexCarnet].content) data[indexCarnet].content = []
                 data[indexCarnet].content.push({ id: uuidv4(), titretab: nomTableau, contenttab: [] })
-                console.log("b");
-                console.log(data[indexCarnet]);
-                set(ref(database, 'Trellos/' + uid), data[indexCarnet]);
-                resolve(data[indexCarnet])
+                 set(ref(database, 'Trellos/' + uid), data);
+                 resolve(data[indexCarnet])
             }).catch(err => {
                 console.log(err);
             });
@@ -34,11 +30,10 @@ export function getAllTableaux(uid,tabEnCours) {
             const reference = ref(database, 'Trellos/' + uid);
             onValue(reference, (snapshot) => {
                 const data = snapshot.val() ?? [];
-                console.log(data.id)
-                //const indexCarnet = data.findIndex(elem => elem.id === tabEnCours)
-                
-                //if (!data[indexCarnet].content) data[indexCarnet].content = []
-                //resolve(data[indexCarnet].content)
+
+                const indexCarnet = data.findIndex(elem => elem.id === tabEnCours)
+                if (!data[indexCarnet].content) data[indexCarnet].content = []
+                resolve(data[indexCarnet].content)
             });
         }
         catch (e) {
@@ -47,15 +42,16 @@ export function getAllTableaux(uid,tabEnCours) {
     })
 }
 
-export function deleteTableau(uid, tabEnCours) {
+export function deleteTableau(uid, tabEnCours,listEnCours) {
     return new Promise((resolve, reject) => {
         try {
             const reference = ref(database);
             get(child(reference, `Trellos/${uid}`)).then((snapshot) => {
                 const data = snapshot.val() ?? [];
-                const num_2 = data.findIndex((elem) => elem.id === tabEnCours)
-                data.splice(num_2, 1)
-                set(ref(database, 'Trellos/' + uid), data[num_2]);
+                const indexCarnet = data.findIndex(elem => elem.id === tabEnCours)
+                const delTab = data[indexCarnet].findIndex(elem => elem.id === listEnCours)
+                data.splice(delTab, 1)
+                set(ref(database, 'Trellos/' + uid), data);
                 resolve(data)
             });
         }
