@@ -49,10 +49,10 @@ export function deleteTableau(uid, tabEnCours,listEnCours) {
             get(child(reference, `Trellos/${uid}`)).then((snapshot) => {
                 const data = snapshot.val() ?? [];
                 const indexCarnet = data.findIndex(elem => elem.id === tabEnCours)
-                const delTab = data[indexCarnet].findIndex(elem => elem.id === listEnCours)
-                data.splice(delTab, 1)
+                const delTab = data[indexCarnet].content.findIndex(elem => elem.id === listEnCours)
+                data[indexCarnet].content.splice(delTab, 1)
                 set(ref(database, 'Trellos/' + uid), data);
-                resolve(data)
+                resolve(data[indexCarnet].content)
             });
         }
         catch (e) {
