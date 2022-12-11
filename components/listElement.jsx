@@ -33,7 +33,7 @@ export default function ListElement({ item, navigation, modif }){
                 )}
                 onPress={handleClick}
             >
-                <ListItem.Title>{item.titreelement}</ListItem.Title>
+                <ListItem.Title>{item.titreElement}</ListItem.Title>
 
             </ListItem.Swipeable>
         </View>

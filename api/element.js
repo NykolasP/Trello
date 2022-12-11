@@ -12,8 +12,9 @@ export function ajoutElement(uid, tabEnCours,listEnCours, nomElement,contenuElem
                 const data = snapshot.val() ?? [];
                 const indexTableau = data.findIndex(elem => elem.id === tabEnCours)
                 const indexListe = data[indexTableau].content.findIndex(elem => elem.id === listEnCours)
-                if (!data[indexTableau].content[indexListe]) data[indexTableau].content[indexListe].contenttab = []
-                console.log(data[indexTableau].content[indexListe].contenttab)
+                if (data[indexTableau].content[indexListe]) {
+                    data[indexTableau].content[indexListe].contenttab = []
+                }
                 data[indexTableau].content[indexListe].contenttab.push({ id: uuidv4(), titreElement: nomElement, contentElement: contenuElement })
                 set(ref(database, 'Trellos/' + uid), data);
                 resolve(data[indexTableau].content[indexListe].contenttab)
