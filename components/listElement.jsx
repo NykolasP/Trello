@@ -5,7 +5,7 @@ import { Alert, Dimensions, View } from "react-native";
 import { TrelloContext } from '../context';
 import {useNavigation} from '@react-navigation/native';
 
-export default function ListElement({ item, navigation }){
+export default function ListElement({ item, navigation, modif }){
     const { user, setElementEnCours } = useContext(TrelloContext);
     const navigatione = useNavigation();
     function handleClick() {

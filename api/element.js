@@ -4,17 +4,17 @@ import { app } from "./app";
 
 const database = getDatabase(app);
 
-export function ajoutTableau(uid, tabEnCours, nomTableau) {
+export function ajoutElement(uid, tabEnCours,listEnCours, nomElement,contenuElement) {
     return new Promise((resolve, reject) => {
         try {
             const reference = ref(database);
             get(child(reference, `Trellos/${uid}`)).then((snapshot) => {
                 const data = snapshot.val() ?? [];
                 const indexTableau = data.findIndex(elem => elem.id === tabEnCours)
-                if (!data[indexTableau].content) data[indexTableau].content = []
-                data[indexTableau].content.push({ id: uuidv4(), titretab: nomTableau, contenttab: [] })
-                 set(ref(database, 'Trellos/' + uid), data);
-                 resolve(data[indexTableau])
+                const indexListe = data[indexTableau].content.findIndex(elem => elem.id === listEnCours)
+                if (!data[indexTableau].content[indexListe]) data[indexTableau].content[indexListe].contenttab = []
+                set(ref(database, 'Trellos/' + uid), data);
+                resolve(data[indexTableau].content[indexListe].contenttab)
             }).catch(err => {
                 console.log(err);
             });
@@ -24,16 +24,16 @@ export function ajoutTableau(uid, tabEnCours, nomTableau) {
         }
     })
 }
-export function getAllTableaux(uid,tabEnCours) {
+export function getAllElements(uid,tabEnCours,listEnCours) {
     return new Promise((resolve, reject) => {
         try {
             const reference = ref(database, 'Trellos/' + uid);
             onValue(reference, (snapshot) => {
                 const data = snapshot.val() ?? [];
-
                 const indexTableau = data.findIndex(elem => elem.id === tabEnCours)
-                if (!data[indexTableau].content) data[indexTableau].content = []
-                resolve(data[indexTableau].content)
+                const indexListe = data[indexTableau].content.findIndex(elem => elem.id === listEnCours)
+                if (!data[indexTableau].content[indexListe]) data[indexTableau].content[indexListe].contenttab = []
+                resolve(data[indexTableau].content[indexListe].contenttab)
             });
         }
         catch (e) {
@@ -42,7 +42,7 @@ export function getAllTableaux(uid,tabEnCours) {
     })
 }
 
-export function deleteTableau(uid, tabEnCours,listEnCours) {
+export function deleteElement(uid, tabEnCours,listEnCours) {
     return new Promise((resolve, reject) => {
         try {
             const reference = ref(database);

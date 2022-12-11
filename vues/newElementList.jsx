@@ -1,17 +1,22 @@
 import { Input, Button } from "@rneui/themed";
 import { useState, useContext } from "react";
 import { StatusBar, View } from "react-native";
+import { ajoutElement } from "../api/element";
 
 import { TrelloContext } from "../context";
 
 import { styles } from "../styles";
 
-export function NewElementList() {
+export function NewElementList({ navigation }) {
     const [nomElement, setNomElement] = useState("");
     const [contenuElement, setcontenuElement] = useState("");
-    const { user } = useContext(TrelloContext);
+    const { user,tabEnCours,listEnCours } = useContext(TrelloContext);
     function handleClick() {
-        console.log(nomTrello)
+        ajoutElement(user.uid,tabEnCours,listEnCours, nomElement, contenuElement).then(data => {
+            navigation.push("Liste Elements")
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     return (
